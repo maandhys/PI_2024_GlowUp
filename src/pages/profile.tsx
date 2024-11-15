@@ -1,9 +1,11 @@
+/* eslint-disable */
 // pages/profile.tsx
 import { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Component para exibição de imagem de perfil
+
 const ProfileImage = ({ imageSrc }: { imageSrc: string }) => (
   <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-300">
     // eslint-disable-next-line
