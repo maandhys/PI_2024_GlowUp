@@ -20,7 +20,7 @@ const Gallery: React.FC = () => {
         {/* Exemplo de transformação */}
         <div className="bg-white p-4 rounded-lg shadow-lg">
         // eslint-disable-next-line
-          <img src="/images/example1.jpg" alt="Transformação" className="rounded-lg" />
+          {/* <img src="/images/example1.jpg" alt="Transformação" className="rounded-lg" /> */}
           <p className="mt-2 text-center">Transformação de Laura</p>
         </div>
       </div>

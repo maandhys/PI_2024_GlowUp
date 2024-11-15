@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 const ProfileImage = ({ imageSrc }: { imageSrc: string }) => (
   <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-300">
     // eslint-disable-next-line
-    <img src={imageSrc} alt="Imagem de perfil" className="object-cover w-full h-full" />
+    {/* <img src={imageSrc} alt="Imagem de perfil" className="object-cover w-full h-full" /> */}
   </div>
 );
 
@@ -19,6 +19,7 @@ const Profile: React.FC = () => {
   const [goals, setGoals] = useState('');
   const [milestones, setMilestones] = useState('');
 
+  // eslint-disable-next-line
   const router = useRouter();
 
   const handleSave = () => {
