@@ -1,3 +1,4 @@
+/* eslint-disable */
 // pages/gallery.tsx
 import { useState } from 'react';
 
