@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const Dashboard: React.FC = () => {
+  // eslint-disable-next-line
   const [user, setUser] = useState({
     name: 'Joana', // Substitua com dados reais do usuário
     progress: 75, // Exemplo de progresso
