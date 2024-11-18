@@ -1,22 +1,70 @@
-import { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+ import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from 'next/link'
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  type GoogleResponse = {
+    credential: string;
+  };
+  // Configurar Google Login
+  useEffect(() => {
+    /* Carregar o script do Google Identity Services */
+    const loadGoogleScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.onload = initializeGoogleLogin;
+      document.body.appendChild(script);
+    };
 
-  const handleLogin = (e: React.FormEvent) => {
+    
+
+    const initializeGoogleLogin = () => {
+      window.google.accounts.id.initialize({
+        client_id: '407268973911-fittepah55bugj9i42960dpobuk6pbkd.apps.googleusercontent.com',
+        callback: handleGoogleResponse,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('googleSignInButton'),
+        { theme: 'outline', size: 'large' }
+      );
+    };
+
+    loadGoogleScript();
+  }, []);
+
+  // Callback para resposta do Google
+  const handleGoogleResponse = (response: GoogleResponse) => {
+    console.log('Google Credential:', response.credential);
+
+    // Enviar o token para o back-end
+    fetch('/api/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: response.credential }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          setError(data.error);
+        } else {
+          // Usuário autenticado, redirecionar ou salvar token
+          console.log('Usuário autenticado:', data.user);
+        }
+      })
+      .catch((err) => setError('Erro ao autenticar com Google'));
+  };
+
+  // Login manual com e-mail/senha
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email === "nayara@teste.com" && password === "nayara") {
-      alert("Login bem-sucedido!");
-      router.push('/dashboard');
-    } else {
-      setError("Credenciais inválidas, tente novamente.");
-    }
+    // Implementar autenticação padrão (e-mail/senha)
+    console.log('Email:', email, 'Password:', password);
   };
 
   return (
@@ -29,7 +77,9 @@ const Login: React.FC = () => {
         {error && <p className="text-red-500 text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">E-mail</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+              E-mail
+            </label>
             <input
               type="email"
               id="email"
@@ -40,7 +90,9 @@ const Login: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">Senha</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+              Senha
+            </label>
             <input
               type="password"
               id="password"
@@ -57,15 +109,15 @@ const Login: React.FC = () => {
             Entrar
           </button>
         </form>
+        <div className="mt-6">
+          <div id="googleSignInButton"></div>
+        </div>
         <p className="text-center text-gray-500 mt-6">
-          Não tem uma conta?{' '}
-          <Link href="/register" legacyBehavior>
-            <a className="text-gray-900 hover:underline">Cadastre-se</a>
-          </Link>
+          Não tem uma conta?{' '}<Link href="/register" className="text-gray-900 hover:underline" legacyBehavior>
+    <a className="text-gray-900 hover:underline"> Cadastre-se</a>
+  </Link>
         </p>
       </div>
     </div>
   );
-};
-
-export default Login;
+}

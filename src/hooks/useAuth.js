@@ -1,4 +1,6 @@
 // hooks/useAuth.js
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { useState, useEffect } from 'react';
 import { login, logout } from '../services/authService';
 
