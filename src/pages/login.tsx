@@ -44,7 +44,7 @@ export default function LoginPage() {
 
     // Enviar o token para o back-end
     fetch('/api/auth/google', {
-      method: 'POST',
+      method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token: response.credential }),
     })
